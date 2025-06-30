@@ -1,36 +1,289 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Gama Figth - Site da Equipe de Jiu Jitsu
 
-## Getting Started
+Site completo para equipe de Jiu Jitsu com sistema de e-commerce, blog, galeria, painel administrativo e mais.
 
-First, run the development server:
+## 🚀 Funcionalidades
 
+### Frontend
+- **Design Responsivo**: Interface moderna com Material-UI
+- **Internacionalização**: Suporte a Português, Inglês e Espanhol
+- **Páginas Principais**: Home, Sobre, Filiais, Loja, Galeria, Blog, Contato
+- **Sistema de Autenticação**: Login/Registro com JWT
+- **E-commerce**: Catálogo de produtos, carrinho e checkout com Stripe
+- **Blog**: Sistema de posts com comentários
+- **Galeria**: Upload e exibição de fotos
+- **Formulário de Contato**: Integrado com banco de dados
+
+### Backend
+- **API REST**: Endpoints para todas as funcionalidades
+- **Banco de Dados**: PostgreSQL com Prisma ORM
+- **Autenticação**: JWT com bcrypt para senhas
+- **Upload de Imagens**: Cloudinary para armazenamento
+- **Pagamentos**: Integração completa com Stripe
+- **Webhooks**: Processamento automático de pagamentos
+
+### Painel Administrativo
+- **Dashboard**: Estatísticas e visão geral
+- **Gestão de Produtos**: CRUD completo
+- **Gestão de Posts**: Editor de blog
+- **Gestão de Galeria**: Upload múltiplo de imagens
+- **Gestão de Usuários**: Controle de acesso
+- **Gestão de Pedidos**: Acompanhamento de vendas
+- **Upload de Imagens**: Interface drag & drop
+
+### SEO e Performance
+- **Sitemap Dinâmico**: Geração automática com next-sitemap
+- **Meta Tags Dinâmicas**: Otimização para motores de busca
+- **Robots.txt**: Configuração automática
+- **Performance**: Otimizações de imagem e carregamento
+
+### Testes
+- **Jest**: Framework de testes
+- **Testing Library**: Testes de componentes React
+- **Cobertura**: Relatórios de cobertura de código
+
+## 🛠️ Tecnologias
+
+### Frontend
+- **Next.js 15**: Framework React com App Router
+- **TypeScript**: Tipagem estática
+- **Material-UI**: Componentes de interface
+- **React i18next**: Internacionalização
+- **Stripe**: Integração de pagamentos
+
+### Backend
+- **Prisma**: ORM para banco de dados
+- **PostgreSQL**: Banco de dados principal
+- **JWT**: Autenticação
+- **bcryptjs**: Hash de senhas
+- **Cloudinary**: Upload de imagens
+- **Stripe**: Processamento de pagamentos
+
+### DevOps
+- **Jest**: Testes automatizados
+- **next-sitemap**: Geração de sitemap
+- **ESLint**: Linting de código
+
+## 📦 Instalação
+
+### Pré-requisitos
+- Node.js 18+
+- PostgreSQL
+- Conta no Cloudinary
+- Conta no Stripe
+
+### 1. Clone o repositório
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone <repository-url>
+cd site-gama-figth
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 2. Instale as dependências
+```bash
+npm install
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### 3. Configure as variáveis de ambiente
+Crie um arquivo `.env` baseado no `.env.example`:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```env
+# Database
+DATABASE_URL="postgresql://username:password@localhost:5432/gamafigth"
 
-## Learn More
+# JWT
+JWT_SECRET="your-super-secret-jwt-key-here"
 
-To learn more about Next.js, take a look at the following resources:
+# Stripe
+STRIPE_PUBLISHABLE_KEY="pk_test_your_stripe_publishable_key"
+STRIPE_SECRET_KEY="sk_test_your_stripe_secret_key"
+STRIPE_WEBHOOK_SECRET="whsec_your_webhook_secret"
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+# Cloudinary
+CLOUDINARY_CLOUD_NAME="your_cloud_name"
+CLOUDINARY_API_KEY="your_api_key"
+CLOUDINARY_API_SECRET="your_api_secret"
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+# Site
+SITE_URL="https://gamafigth.com.br"
+```
 
-## Deploy on Vercel
+### 4. Configure o banco de dados
+```bash
+# Gerar cliente Prisma
+npm run db:generate
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+# Executar migrações
+npm run db:migrate
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+# Popular banco com dados iniciais
+npm run db:seed
+```
+
+### 5. Execute o projeto
+```bash
+# Desenvolvimento
+npm run dev
+
+# Produção
+npm run build
+npm start
+```
+
+## 📁 Estrutura do Projeto
+
+```
+site-gama-figth/
+├── app/                          # App Router (Next.js 15)
+│   ├── admin/                    # Painel administrativo
+│   │   ├── components/           # Componentes do admin
+│   │   ├── layout.tsx           # Layout do admin
+│   │   └── page.tsx             # Dashboard
+│   ├── api/                      # API Routes
+│   │   ├── auth/                 # Autenticação
+│   │   ├── admin/                # APIs do admin
+│   │   ├── upload/               # Upload de imagens
+│   │   └── webhooks/             # Webhooks Stripe
+│   ├── components/               # Componentes compartilhados
+│   ├── globals.css              # Estilos globais
+│   ├── layout.tsx               # Layout principal
+│   └── page.tsx                 # Página inicial
+├── contexts/                     # Contextos React
+├── lib/                         # Utilitários e configurações
+├── prisma/                      # Schema e migrações
+├── scripts/                     # Scripts utilitários
+├── __tests__/                   # Testes automatizados
+├── next-sitemap.config.js       # Configuração do sitemap
+├── jest.config.js              # Configuração do Jest
+└── package.json
+```
+
+## 🧪 Testes
+
+### Executar testes
+```bash
+# Todos os testes
+npm test
+
+# Modo watch
+npm run test:watch
+
+# Com cobertura
+npm run test:coverage
+```
+
+### Tipos de testes
+- **Testes de Componentes**: Verificação de renderização e interações
+- **Testes de API**: Validação de endpoints
+- **Testes de Integração**: Fluxos completos
+
+## 🔧 Scripts Disponíveis
+
+```bash
+# Desenvolvimento
+npm run dev              # Servidor de desenvolvimento
+npm run build            # Build de produção
+npm run start            # Servidor de produção
+npm run lint             # Linting de código
+
+# Banco de dados
+npm run db:migrate       # Executar migrações
+npm run db:generate      # Gerar cliente Prisma
+npm run db:seed          # Popular banco
+npm run db:studio        # Interface do Prisma
+npm run db:reset         # Reset do banco
+
+# Testes
+npm run test             # Executar testes
+npm run test:watch       # Testes em modo watch
+npm run test:coverage    # Testes com cobertura
+
+# SEO
+npm run postbuild        # Gerar sitemap (executado após build)
+
+# Utilitários
+npm run type-check       # Verificação de tipos TypeScript
+```
+
+## 🌐 Deploy
+
+### Vercel (Recomendado)
+1. Conecte seu repositório ao Vercel
+2. Configure as variáveis de ambiente
+3. Deploy automático a cada push
+
+### Outras plataformas
+- **Netlify**: Suporte completo ao Next.js
+- **Railway**: Deploy com PostgreSQL incluído
+- **Heroku**: Configuração manual necessária
+
+## 🔐 Configuração de Segurança
+
+### Variáveis de ambiente obrigatórias
+- `JWT_SECRET`: Chave secreta para JWT
+- `DATABASE_URL`: URL do banco PostgreSQL
+- `STRIPE_SECRET_KEY`: Chave secreta do Stripe
+- `CLOUDINARY_API_SECRET`: Chave secreta do Cloudinary
+
+### Configurações recomendadas
+- Use HTTPS em produção
+- Configure CORS adequadamente
+- Implemente rate limiting
+- Use variáveis de ambiente seguras
+
+## 📊 Monitoramento
+
+### Logs
+- Logs de erro automáticos
+- Monitoramento de performance
+- Rastreamento de transações
+
+### Métricas
+- Visitas e conversões
+- Performance de vendas
+- Uso do sistema
+
+## 🤝 Contribuição
+
+1. Fork o projeto
+2. Crie uma branch para sua feature
+3. Commit suas mudanças
+4. Push para a branch
+5. Abra um Pull Request
+
+## 📝 Licença
+
+Este projeto está sob a licença MIT. Veja o arquivo `LICENSE` para mais detalhes.
+
+## 🆘 Suporte
+
+Para suporte, entre em contato:
+- Email: contato@gamafigth.com.br
+- WhatsApp: (11) 99999-9999
+
+## 🗺️ Roadmap
+
+### Próximas funcionalidades
+- [ ] Sistema de notificações push
+- [ ] App mobile nativo
+- [ ] Integração com redes sociais
+- [ ] Sistema de afiliados
+- [ ] Chat em tempo real
+- [ ] Analytics avançado
+- [ ] Sistema de cupons
+- [ ] Integração com WhatsApp Business
+- [ ] Sistema de avaliações
+- [ ] Blog com editor rico
+
+### Melhorias técnicas
+- [ ] PWA (Progressive Web App)
+- [ ] Cache avançado
+- [ ] CDN global
+- [ ] Backup automático
+- [ ] Monitoramento de uptime
+- [ ] Testes E2E com Cypress
+- [ ] CI/CD pipeline
+- [ ] Docker containerization
+
+---
+
+**Desenvolvido com ❤️ pela equipe Gama Figth**

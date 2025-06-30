@@ -1,0 +1,232 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  name      String
+  password  String
+  role      Role     @default(USER)
+  avatar    String?
+  phone     String?
+  address   String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relacionamentos
+  orders    Order[]
+  reviews   Review[]
+  posts     Post[]
+  comments  Comment[]
+  favorites Product[] @relation("UserFavorites")
+
+  @@map("users")
+}
+
+model Product {
+  id            String   @id @default(cuid())
+  name          String
+  description   String
+  price         Float
+  originalPrice Float?
+  category      String
+  image         String
+  images        String[] // URLs das imagens adicionais
+  stock         Int      @default(0)
+  rating        Float    @default(0)
+  reviewsCount  Int      @default(0)
+  features      String[] // Características do produto
+  isActive      Boolean  @default(true)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  // Relacionamentos
+  orderItems OrderItem[]
+  reviews    Review[]
+  favorites  User[] @relation("UserFavorites")
+
+  @@map("products")
+}
+
+model Order {
+  id          String      @id @default(cuid())
+  userId      String
+  status      OrderStatus @default(PENDING)
+  total       Float
+  items       OrderItem[]
+  shippingAddress String
+  paymentMethod   String
+  paymentStatus   PaymentStatus @default(PENDING)
+  trackingCode    String?
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+
+  // Relacionamentos
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("orders")
+}
+
+model OrderItem {
+  id        String @id @default(cuid())
+  orderId   String
+  productId String
+  quantity  Int
+  price     Float
+
+  // Relacionamentos
+  order   Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@map("order_items")
+}
+
+model Review {
+  id        String @id @default(cuid())
+  userId    String
+  productId String
+  rating    Int
+  comment   String?
+  createdAt DateTime @default(now())
+
+  // Relacionamentos
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@map("reviews")
+}
+
+model Branch {
+  id          String   @id @default(cuid())
+  name        String
+  address     String
+  city        String
+  phone       String
+  whatsapp    String
+  email       String
+  hours       String
+  features    String[] // Características da filial
+  description String
+  coordinates String   // URL do Google Maps
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("branches")
+}
+
+model Post {
+  id          String   @id @default(cuid())
+  title       String
+  content     String
+  excerpt     String?
+  image       String?
+  authorId    String
+  isPublished Boolean  @default(false)
+  publishedAt DateTime?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relacionamentos
+  author   User      @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  comments Comment[]
+
+  @@map("posts")
+}
+
+model Comment {
+  id        String @id @default(cuid())
+  content   String
+  userId    String
+  postId    String
+  createdAt DateTime @default(now())
+
+  // Relacionamentos
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  post Post @relation(fields: [postId], references: [id], onDelete: Cascade)
+
+  @@map("comments")
+}
+
+model Gallery {
+  id          String   @id @default(cuid())
+  title       String
+  description String?
+  image       String
+  category    String
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+
+  @@map("gallery")
+}
+
+model Contact {
+  id        String @id @default(cuid())
+  name      String
+  email     String
+  phone     String?
+  subject   String
+  message   String
+  status    ContactStatus @default(PENDING)
+  createdAt DateTime @default(now())
+
+  @@map("contacts")
+}
+
+model Event {
+  id          String   @id @default(cuid())
+  title       String
+  description String
+  date        DateTime
+  location    String
+  image       String?
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("events")
+}
+
+// Enums
+enum Role {
+  USER
+  ADMIN
+  INSTRUCTOR
+  GRAMESTRE
+  MESTRE
+  ALUNO
+}
+
+enum OrderStatus {
+  PENDING
+  CONFIRMED
+  SHIPPED
+  DELIVERED
+  CANCELLED
+}
+
+enum PaymentStatus {
+  PENDING
+  PAID
+  FAILED
+  REFUNDED
+}
+
+enum ContactStatus {
+  PENDING
+  READ
+  RESPONDED
+  CLOSED
+}

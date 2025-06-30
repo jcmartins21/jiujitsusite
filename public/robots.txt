@@ -1,0 +1,11 @@
+# *
+User-agent: *
+Allow: /
+Disallow: /admin/
+Disallow: /api/
+
+# Host
+Host: https://gamafigth.com.br
+
+# Sitemaps
+Sitemap: https://gamafigth.com.br/sitemap.xml
