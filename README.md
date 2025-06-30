@@ -257,8 +257,8 @@ Este projeto está sob a licença MIT. Veja o arquivo `LICENSE` para mais detalh
 ## 🆘 Suporte
 
 Para suporte, entre em contato:
-- Email: contato@gamafigth.com.br
-- WhatsApp: (11) 99999-9999
+- Email: jcmartins21@icloud.com
+- WhatsApp: (21) 96015-0175
 
 ## 🗺️ Roadmap
 
